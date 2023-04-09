@@ -1,0 +1,1016 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Api Documentation",
+        "version": "1.0",
+        "title": "Api Documentation",
+        "termsOfService": "urn:tos",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "host": "frkk-ift2.apps.ss1-genr01.test.vtb.ru",
+    "basePath": "/ui-api-web/smb/frnt/easup-integration",
+    "tags": [
+        {
+            "name": "cache-controller",
+            "description": "АПИ для работы с кэшем сервиса"
+        },
+        {
+            "name": "data-load-switch-controller",
+            "description": "Контроллер выступающий в роли рубильника для выгрузки данных справочников в kafka"
+        },
+        {
+            "name": "easup-sync-controller",
+            "description": "Контроллер позволяющий запустить выгрузку набород данных ЕАСУП в kafka"
+        },
+        {
+            "name": "employee-controller",
+            "description": "Контроллер, позволяющий получать и искать данные по сотрудникам"
+        },
+        {
+            "name": "functional-hierarchy-cms-controller",
+            "description": "Контроллер, позволяющий получать и заполнять данные функциональной иерархии"
+        },
+        {
+            "name": "org-unit-controller",
+            "description": "Контроллер, позволяющий получать и искать данные по подразделениям"
+        }
+    ],
+    "paths": {
+        "/cache": {
+            "get": {
+                "tags": [
+                    "cache-controller"
+                ],
+                "summary": "Отдает кэши сервиса",
+                "operationId": "getCachesUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CacheDto"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/cms/functional": {
+            "get": {
+                "tags": [
+                    "functional-hierarchy-cms-controller"
+                ],
+                "summary": "Получение справочника фунциональной иерархии",
+                "operationId": "getFunctionalUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FunctionalHierarchyItemDto"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/cms/functional/curators/{directionCode}": {
+            "get": {
+                "tags": [
+                    "functional-hierarchy-cms-controller"
+                ],
+                "summary": "Получение списка всех кураторов",
+                "operationId": "getFunctionalCuratorsUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "directionCode",
+                        "in": "path",
+                        "description": "directionCode",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FunctionalEmployeeDto"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/cms/functional/roobg/{directionCode}": {
+            "get": {
+                "tags": [
+                    "functional-hierarchy-cms-controller"
+                ],
+                "summary": "Получение списка РОО/БГ доступных для выбора",
+                "operationId": "getFunctionalRooBgUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "directionCode",
+                        "in": "path",
+                        "description": "directionCode",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FunctionalRooBgDto"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/cms/functional/{directionCode}": {
+            "put": {
+                "tags": [
+                    "functional-hierarchy-cms-controller"
+                ],
+                "summary": "Сохранить информацию по фунциональной иерархии",
+                "operationId": "putFunctionalHierarchiUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "directionCode",
+                        "in": "path",
+                        "description": "directionCode",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "rq",
+                        "description": "rq",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/FunctionalHierarchyEditRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/departments": {
+            "get": {
+                "tags": [
+                    "org-unit-controller"
+                ],
+                "summary": "Поиск подразделений",
+                "operationId": "findOrgUnitsUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Поисковый запрос",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/OrgUnitHierarchyDto"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/departments/{id}": {
+            "get": {
+                "tags": [
+                    "org-unit-controller"
+                ],
+                "summary": "Получение данных по подразделению",
+                "operationId": "getOrgUnitByIdUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "depth",
+                        "in": "query",
+                        "description": "Глубина вложенности",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "allowEmptyValue": false
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID подразделения в SAP HCM",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/OrgUnitHierarchyDto"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/employees": {
+            "get": {
+                "tags": [
+                    "employee-controller"
+                ],
+                "summary": "Поиск сотрудников",
+                "operationId": "findEmployeesUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Поисковый запрос",
+                        "required": true,
+                        "type": "string",
+                        "allowEmptyValue": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/EmployeeHierarchyDto"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/employees/{id}": {
+            "get": {
+                "tags": [
+                    "employee-controller"
+                ],
+                "summary": "Получение данных по сотруднику",
+                "operationId": "getEmployeeByIdUsingGET",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "depth",
+                        "in": "query",
+                        "description": "Глубина вложенности",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "allowEmptyValue": false
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Табельный номер в SAP HCM",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/EmployeeHierarchyNodeDto"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/switch/initCatalogsLoad": {
+            "get": {
+                "tags": [
+                    "data-load-switch-controller"
+                ],
+                "summary": "Включение рубильника на выгрузку трёх справочников: справочник организаций, справочник сотрудников, CMS справочник функциональной иерархии",
+                "operationId": "loadCatalogsFromLegacyEasupServiceUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/sync": {
+            "post": {
+                "tags": [
+                    "easup-sync-controller"
+                ],
+                "summary": "Запуск выгрузки",
+                "operationId": "syncUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "dto",
+                        "description": "dto",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SyncRequestDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/sync/datasets": {
+            "get": {
+                "tags": [
+                    "easup-sync-controller"
+                ],
+                "summary": "Наборы данных",
+                "operationId": "datasetsUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DataSetExportInfoDTO"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/sync/info/{setID}": {
+            "get": {
+                "tags": [
+                    "easup-sync-controller"
+                ],
+                "summary": "Состояние процесса обновления набора данных",
+                "operationId": "infoUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "setID",
+                        "in": "path",
+                        "description": "setID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SyncInfo"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "definitions": {
+        "CacheDto": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Имя кэша на серсвере"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Имя кэша для UI"
+                }
+            },
+            "title": "CacheDto",
+            "description": "Данные кэша"
+        },
+        "CuratorEditRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "roleCodes"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "roleCodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "title": "CuratorEditRequest"
+        },
+        "DataSetExportInfoDTO": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "description": "Комментарий"
+                },
+                "modes": {
+                    "type": "array",
+                    "description": "Поддерживаемые режимы выгрузки",
+                    "items": {
+                        "$ref": "#/definitions/ExportModeDTO"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Название набора данных"
+                },
+                "setID": {
+                    "type": "string",
+                    "description": "ID набора данных"
+                }
+            },
+            "title": "DataSetExportInfoDTO",
+            "description": "Данные набора"
+        },
+        "EmployeeHierarchyDto": {
+            "type": "object",
+            "properties": {
+                "bossId": {
+                    "type": "string",
+                    "description": "Табельный номер руководителя в SAP HCM"
+                },
+                "departmentId": {
+                    "type": "string",
+                    "description": "Код подразделения сотрудника"
+                },
+                "departmentName": {
+                    "type": "string",
+                    "description": "Название подразделения сотрудника"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Почтовый адрес"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Имя"
+                },
+                "patronymic": {
+                    "type": "string",
+                    "description": "Отчество"
+                },
+                "personnelNumber": {
+                    "type": "string",
+                    "description": "Табельный номер в SAP HCM"
+                },
+                "surname": {
+                    "type": "string",
+                    "description": "Фамилия"
+                }
+            },
+            "title": "EmployeeHierarchyDto"
+        },
+        "EmployeeHierarchyNodeDto": {
+            "type": "object",
+            "properties": {
+                "boss": {
+                    "description": "Руководитель",
+                    "$ref": "#/definitions/EmployeeHierarchyDto"
+                },
+                "employee": {
+                    "description": "Сотрудник",
+                    "$ref": "#/definitions/EmployeeHierarchyDto"
+                },
+                "employees": {
+                    "type": "array",
+                    "description": "Список сотрудников в прямом подчинении",
+                    "items": {
+                        "$ref": "#/definitions/EmployeeHierarchyNodeDto"
+                    }
+                }
+            },
+            "title": "EmployeeHierarchyNodeDto"
+        },
+        "ExportModeDTO": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "description": "Название"
+                },
+                "mode": {
+                    "type": "string",
+                    "description": "Режим выгрузки"
+                }
+            },
+            "title": "ExportModeDTO",
+            "description": "Данные о режиме выгрузки"
+        },
+        "FunctionalDirectionDto": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "Код дирекции"
+                },
+                "curators": {
+                    "type": "array",
+                    "description": "Список кураторов в текущей дирекцие",
+                    "items": {
+                        "$ref": "#/definitions/FunctionalEmployeeDto"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Наименование дирекции"
+                },
+                "rooBgs": {
+                    "type": "array",
+                    "description": "Списко РОО/БГ в текущей дирекцие",
+                    "items": {
+                        "$ref": "#/definitions/FunctionalRooBgDto"
+                    }
+                }
+            },
+            "title": "FunctionalDirectionDto"
+        },
+        "FunctionalEmployeeDto": {
+            "type": "object",
+            "properties": {
+                "allRoles": {
+                    "type": "boolean",
+                    "description": "Куратор всех ролей"
+                },
+                "code": {
+                    "type": "string",
+                    "description": "Код куратора emp_sap_id"
+                },
+                "fullName": {
+                    "type": "string",
+                    "description": "ФИО куратора"
+                },
+                "roles": {
+                    "type": "array",
+                    "description": "Список курируемых ролей",
+                    "items": {
+                        "$ref": "#/definitions/FunctionalRoleDto"
+                    }
+                },
+                "selected": {
+                    "type": "boolean",
+                    "description": "Признак что куратор выбран"
+                }
+            },
+            "title": "FunctionalEmployeeDto"
+        },
+        "FunctionalHierarchyEditRequest": {
+            "type": "object",
+            "required": [
+                "curators",
+                "departmentCodes"
+            ],
+            "properties": {
+                "curators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CuratorEditRequest"
+                    }
+                },
+                "departmentCodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "title": "FunctionalHierarchyEditRequest"
+        },
+        "FunctionalHierarchyItemDto": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "Код управления"
+                },
+                "directions": {
+                    "type": "array",
+                    "description": "Список дирекций управления",
+                    "items": {
+                        "$ref": "#/definitions/FunctionalDirectionDto"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Наименование управления"
+                }
+            },
+            "title": "FunctionalHierarchyItemDto"
+        },
+        "FunctionalRoleDto": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "Код роли"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Наименование роли"
+                },
+                "selected": {
+                    "type": "boolean",
+                    "description": "Признак что роль выбрана"
+                }
+            },
+            "title": "FunctionalRoleDto"
+        },
+        "FunctionalRooBgDto": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "Код РОО/БГ"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Наименование РОО/БГ"
+                },
+                "selected": {
+                    "type": "boolean",
+                    "description": "Призанк выбранного продразделения в рамках этого РОО/БГ"
+                }
+            },
+            "title": "FunctionalRooBgDto"
+        },
+        "OrgUnitHierarchyDto": {
+            "type": "object",
+            "properties": {
+                "bossId": {
+                    "type": "string",
+                    "description": "ТабНом Руководителя"
+                },
+                "departmentId": {
+                    "type": "string",
+                    "description": "ID подразделения в SAP HCM"
+                },
+                "departmentName": {
+                    "type": "string",
+                    "description": "Имя подразделения"
+                },
+                "departments": {
+                    "type": "array",
+                    "description": "Список подразделений внутренних подраздеелений",
+                    "items": {
+                        "$ref": "#/definitions/OrgUnitHierarchyDto"
+                    }
+                }
+            },
+            "title": "OrgUnitHierarchyDto"
+        },
+        "SyncInfo": {
+            "type": "object",
+            "required": [
+                "dateFrom",
+                "dateTo",
+                "exMode",
+                "setID"
+            ],
+            "properties": {
+                "completed": {
+                    "type": "boolean"
+                },
+                "dateFrom": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "dateTo": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "exMode": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "messageID": {
+                    "type": "string"
+                },
+                "rowAmount": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "rowReceived": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "setID": {
+                    "type": "string"
+                },
+                "statusID": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "statusName": {
+                    "type": "string"
+                }
+            },
+            "title": "SyncInfo"
+        },
+        "SyncRequestDTO": {
+            "type": "object",
+            "properties": {
+                "dateFrom": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "С какой даты включительно производить синхронизацию данных"
+                },
+                "dateTo": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "По какую дату включительно производить синхронизацию данных"
+                },
+                "mode": {
+                    "type": "string",
+                    "description": "Тип выгрузки"
+                },
+                "setID": {
+                    "type": "string",
+                    "description": "ID набора данных"
+                }
+            },
+            "title": "SyncRequestDTO",
+            "description": "Запрос на выгрузку набора"
+        }
+    }
+}
